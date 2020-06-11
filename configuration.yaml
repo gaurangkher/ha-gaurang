@@ -38,11 +38,14 @@ switch:
   - platform: bhyve
 
 panel_iframe:
-  jupyterlab:
-    title: JupyterLab
+  jupyterhub:
+    title: JupyterHub
     icon: mdi:flask
     url: http://gktrishul.duckdns.org/jupyterhub
-
+  prep:
+    title: Prep
+    icon: mdi:flask
+    url: https://gktrishul.duckdns.org/local/apps/prep/index.html
 
 device_tracker:
   - platform: nmap_tracker
