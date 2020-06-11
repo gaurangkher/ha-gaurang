@@ -1,0 +1,64 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+   base_url: gktrishul.duckdns.org
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+ffmpeg:
+
+lovelace:
+  mode: storage
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+# B-Hyve   
+bhyve:
+  username: !secret bhyve_username
+  password: !secret bhyve_password
+
+sensor:
+  - platform: bhyve
+
+binary_sensor:
+  - platform: bhyve
+
+switch:
+  - platform: bhyve
+
+panel_iframe:
+  jupyterlab:
+    title: JupyterLab
+    icon: mdi:flask
+    url: http://gktrishul.duckdns.org/jupyterhub
+
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.1.0-255
+    scan_options: " --privileged -sn "
+    new_device_defaults:
+      track_new_devices: true
+
+webostv:
+  host: 192.168.1.80
+  #other settings
+  turn_on_action:
+    service: wake_on_lan.send_magic_packet
+    data:
+      mac: D4-63-FE-15-10-47
+    
+zwave:
+  usb_path: /dev/ttyACM1
+  network_key: "0x3D, 0xE6, 0xE1, 0xAD, 0x50, 0xF8, 0xF2, 0x46, 0x28, 0xB6, 0x49, 0xDD, 0x6C, 0x99, 0xC6, 0xF3"
