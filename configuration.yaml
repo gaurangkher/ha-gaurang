@@ -3,8 +3,6 @@
 default_config:
 
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-http:
-   base_url: gktrishul.duckdns.org
 
 # Text to speech
 tts:
@@ -37,6 +35,12 @@ binary_sensor:
 switch:
   - platform: bhyve
 
+# google
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_secret
+
+# LEft nav addons
 panel_iframe:
   jupyterhub:
     title: JupyterHub
@@ -47,6 +51,7 @@ panel_iframe:
     icon: mdi:flask
     url: https://gktrishul.duckdns.org/local/apps/prep/index.html
 
+# Device tracker
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.1.0-255
@@ -61,7 +66,32 @@ webostv:
     service: wake_on_lan.send_magic_packet
     data:
       mac: D4-63-FE-15-10-47
-    
+
+#Chamberlain
+cover:
+  - platform: myq
+    username: !secret myq_username 
+    password: !secret myq_password
+    type: chamberlain
+
+# System Monitor
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: memory_free
+      - type: disk_free
+        arg: /
+      - type: processor_use
+
+# Recorder
+recorder:
+  purge_keep_days: 5 # keep data for # of days
+  exclude: # Excluded things
+    entities: 
+      - sun.sun
+      - sensor.date
+
+#Zwave
 zwave:
   usb_path: /dev/ttyACM1
   network_key: "0x3D, 0xE6, 0xE1, 0xAD, 0x50, 0xF8, 0xF2, 0x46, 0x28, 0xB6, 0x49, 0xDD, 0x6C, 0x99, 0xC6, 0xF3"
